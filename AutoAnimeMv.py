@@ -6,7 +6,8 @@ from time import sleep,strftime,localtime,time # 时间相关
 from datetime import datetime # 时间相减用
 from re import findall,match,search,sub,I # 匹配相关
 from shutil import move # 移动File
-from ast import literal_eval # srt转化
+from ast import literal_eval
+import traceback # srt转化
 from zhconv import convert # 繁化简
 from urllib.parse import quote,unquote # url encode
 from requests import get,post,exceptions # 网络部分
@@ -578,8 +579,14 @@ def Auxiliary_Http(Url,flag='GET',json=None):
     Auxiliary_Exit('网络错误导致番剧处理失败')
 
 def Auxiliary_Api(Name):   
+    SkipApiList = ['朋友的妹妹只纏著我','朋友的妹妹只缠著我'] 
+    for skip_name in SkipApiList:
+        if skip_name in Name:
+            Auxiliary_Log(f'检测到特定番剧《{Name}》，跳过 API 查询','INFO')
+            return Name
+    
     def BgmApi(Name):
-        '''BgmApi相关,返回一个标准的中文名称'''
+        '''BgmApi相关,返回一个标准的中文名称'''        
 
         global USEBGMAPI,BgmAPIDataCache
         if USEBGMAPI == True:
@@ -666,7 +673,12 @@ if __name__ == '__main__':
         ArgvData = Start_GetArgv()
         Processing_Main(Processing_Mode(ArgvData))
     except Exception as err:
-        Auxiliary_Log(f'没有预料到的错误 > {err}','ERROR',flag='PRINT')
+       # Auxiliary_Log(f'没有预料到的错误 > {err}','ERROR',flag='PRINT')
+        err_type = type(err).__name__
+        err_trace = traceback.format_exc()
+        Auxiliary_Log(f'未预料的错误类型: {err_type}', 'ERROR', flag='PRINT')
+        Auxiliary_Log(f'错误详情: {err}', 'ERROR', flag='PRINT')
+        Auxiliary_Log(f'完整堆栈:\n{err_trace}', 'ERROR', flag='PRINT')
     else:
         end = time()
         Auxiliary_Log(f'一切工作已经完成,用时{end - start}','INFO',flag='PRINT')
