@@ -6,8 +6,8 @@ from time import sleep,strftime,localtime,time # 时间相关
 from datetime import datetime # 时间相减用
 from re import findall,match,search,sub,I # 匹配相关
 from shutil import move # 移动File
-from ast import literal_eval
-import traceback # srt转化
+from ast import literal_eval # srt转化
+import traceback 
 from zhconv import convert # 繁化简
 from urllib.parse import quote,unquote # url encode
 from requests import get,post,exceptions # 网络部分
