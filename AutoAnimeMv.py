@@ -658,7 +658,7 @@ def Auxiliary_Api(Name):
         #        ApiName = None
         else:
             ApiName = TMDBApiName if TMDBApiName != None else BGMApiName
-        return ApiName.replace(' ','') if ApiName != None else ApiName
+        return ApiName.replace('/',' ').replace(' ','') if ApiName != None else ApiName
 
 def Auxiliary_Exit(LogMsg):
     '''因可预见错误离场'''
